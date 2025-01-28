@@ -1,0 +1,68 @@
+*.trunk
+data/*
+settings/*
+*.pyc
+# Python specific
+*.py[cod]                # File compilati di Python (.pyc, .pyo, ecc.)
+__pycache__/             # Directory della cache Python
+*.egg                    # File distribuiti Python
+*.egg-info/              # Directory egg-info
+dist/                    # File di distribuzione
+build/                   # File di build
+*.manifest               # File manifest
+*.spec                   # File spec (per pyinstaller)
+
+# Virtual environment
+venv/                    # Directory del virtual environment
+.env/                    # Nome alternativo del virtual environment
+env/                     # Altri nomi comuni per virtual environment
+.Python                  # Collegamento simbolico al virtual environment
+
+# Jupyter Notebook
+.ipynb_checkpoints/      # Checkpoints dei notebook Jupyter
+
+# PyTorch specific
+*.pt                     # Modelli PyTorch salvati
+*.pth                    # File di checkpoint PyTorch
+
+# Log files
+*.log                    # File di log
+logs/                    # Directory dei log
+
+# Testing and coverage
+.coverage                # File di copertura del test
+htmlcov/                 # Rapporto HTML di copertura
+.tox/                    # Directory per tox
+.nox/                    # Directory per nox
+.pytest_cache/           # Cache di pytest
+pytestdebug.log          # File di debug di pytest
+
+# IDE specific
+.idea/                   # IntelliJ IDEA
+.vscode/                 # Visual Studio Code
+*.sublime-workspace      # Sublime Text workspace
+*.sublime-project        # Sublime Text project
+
+# Operating system files
+.DS_Store                # macOS
+Thumbs.db                # Windows
+ehthumbs.db              # Windows
+Desktop.ini              # Windows
+
+# Environment and config files
+.env                     # File di variabili d'ambiente
+.env.*                   # File di variabili d'ambiente specifiche
+*.ini                    # File di configurazione
+*.cfg                    # File di configurazione
+
+# Temporary files
+*.bak                    # Backup temporanei
+*.swp                    # Swap file di editor come Vim
+*.tmp                    # File temporanei generici
+*.temp                   # File temporanei generici
+
+# Ignore specific directories
+output/                  # Cartelle di output
+results/                 # Directory per risultati
+checkpoints/             # Directory di checkpoint (PyTorch)
+saved_models/            # Modelli salvati

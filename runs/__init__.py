@@ -1,0 +1,79 @@
+from .run_factory import RunFactory
+from .Adult.adult_fedavg import AdultFedAvgRun
+from .Compas.compas_fedavg import CompasFedAvgRun
+from .Credit.credit_fedavg import CreditFedAvgRun
+from .Adult.adult_fedavg_lr_gender import AdultFedAvgLRGenderRun
+from .Adult.adult_fedavg_lr_race import AdultFedAvgLRRaceRun
+from .Adult.adult_fedavg_lr_gender_race import AdultFedAvgLRGenderRaceRun
+from .Adult.adult_fedfb_gender import AdultFedFBGenderRun
+from .Adult.adult_fedfb_race import AdultFedFBRaceRun
+from .Adult.adult_fedfb_gender_race import AdultFedFBGenderRaceRun
+from .Adult.adult_glofair_dp_gender import AdultGlofairDPGenderRun
+from .Adult.adult_glofair_dp_race import AdultGlofairDPRaceRun
+from .Adult.adult_glofair_dp_gender_race import AdultGlofairDPGenderRaceRun
+from .Adult.adult_glofair_dp_multiple_attributes import AdultGlofairDPMultipleAttributesRun
+from .Adult.adult_glofair_eod_multiple_attributes import AdultGlofairEODMultipleAttributesRun
+from .Adult.adult_glofair_dp_eod_gender import AdultGlofairDPEODGenderRun
+from .Adult.adult_glofair_dp_eod_race import AdultGlofairDPEODRaceRun
+from .Adult.adult_glofair_dp_eod_gender_race import AdultGlofairDPEODGenderRaceRun
+from .Adult.adult_glofair_eod_gender_race import AdultGlofairEODGenderRaceRun
+from .Adult.adult_glofair_eod_gender import AdultGlofairEODGenderRun
+from .Adult.adult_glofair_eod_race import AdultGlofairEODRaceRun
+from .Compas.compas_fedavg_lr_gender_race import CompasFedAvgLRGenderRaceRun
+from .Compas.compas_fedavg_lr_gender import CompasFedAvgLRGenderRun
+from .Compas.compas_fedavg_lr_race import CompasFedAvgLRRaceRun
+from .Compas.compas_fedfb_gender_race import CompasFedFBGenderRaceRun
+from .Compas.compas_fedfb_gender import CompasFedFBGenderRun
+from .Compas.compas_fedfb_race import CompasFedFBRaceRun
+from .Compas.compas_glofair_dp_eod_gender import CompasGlofairDPEODGenderRun
+from .Compas.compas_glofair_dp_eod_race import CompasGlofairDPEODRaceRun
+from .Compas.compas_glofair_dp_eod_gender_race import CompasGlofairDPEODGenderRaceRun
+from .Compas.compas_glofair_dp_gender import CompasGlofairDPGenderRun
+from .Compas.compas_glofair_dp_race import CompasGlofairDPRaceRun
+from .Compas.compas_glofair_dp_gender_race import CompasGlofairDPGenderRaceRun
+from .Compas.compas_glofair_dp_multiple_attributes import CompasGlofairDPMultipleAttributesRun
+
+from .Compas.compas_glofair_eod_gender_race import CompasGlofairEODGenderRaceRun
+from .Compas.compas_glofair_eod_gender import CompasGlofairEODGenderRun
+from .Compas.compas_glofair_eod_race import CompasGlofairEODRaceRun
+from .Compas.compas_glofair_eod_multiple_attributes import CompasGlofairEODMultipleAttributesRun
+
+
+from .Credit.credit_fedavg_lr_gender_age import CreditFedAvgLRGenderAgeRun
+from .Credit.credit_fedavg_lr_gender import CreditFedAvgLRGenderRun
+from .Credit.credit_fedavg_lr_age import CreditFedAvgLRAgeRun
+from .Credit.credit_fedfb_gender_age import CreditFedFBGenderAgeRun
+from .Credit.credit_fedfb_gender import CreditFedFBGenderRun
+from .Credit.credit_fedfb_age import CreditFedFBAgeRun
+
+from .Credit.credit_glofair_dp_eod_gender import CreditGlofairDPEODGenderRun
+from .Credit.credit_glofair_dp_eod_age import CreditGlofairDPEODAgeRun
+from .Credit.credit_glofair_dp_eod_gender_age import CreditGlofairDPEODGenderAgeRun
+from .Credit.credit_glofair_dp_gender import CreditGlofairDPGenderRun
+from .Credit.credit_glofair_dp_age import CreditGlofairDPAgeRun
+from .Credit.credit_glofair_dp_gender_age import CreditGlofairDPGenderAgeRun
+from .Credit.credit_glofair_dp_multiple_attributes import CreditGlofairDPMultipleAttributesRun
+
+from .Credit.credit_glofair_eod_gender_age import CreditGlofairEODGenderAgeRun
+from .Credit.credit_glofair_eod_gender import CreditGlofairEODGenderRun
+from .Credit.credit_glofair_eod_age import CreditGlofairEODAgeRun
+from .Credit.credit_glofair_eod_multiple_attributes import CreditGlofairEODMultipleAttributesRun
+
+
+from .Adult.adult_f1 import AdultF1
+from .Compas.compas_f1 import CompasF1
+from .Credit.credit_f1 import CreditF1
+from .Adult.adult_alm_centralized import *
+from .Adult.adult_centralized import *
+from .Adult.adult_centralized_multiple import *
+from .Adult.adult_alm_centralized_multiple import *
+from .Compas.compas_centralized import *
+from .Compas.compas_centralized_multiple import *
+from .Compas.compas_alm_centralized_multiple import *
+from .Compas.compas_alm_centralized import *
+from .Credit.credit_alm_centralized import *
+from .Credit.credit_centralized import *
+from .Credit.credit_centralized_multiple import *
+from .Credit.credit_alm_centralized_multiple import *
+
+__all__=['RunFactory']
