@@ -2,12 +2,11 @@ from abc import ABC, abstractmethod
 from architectures import ArchitectureFactory
 from metrics import MetricsFactory
 from dataloaders import DataModule
-from algorithms import AlgorithmFactory
 import torch
 from functools import partial
 from surrogates import SurrogateFactory,SurrogateFunctionSet
 from requirements import RequirementSet, UnconstrainedRequirement, ConstrainedRequirement
-from utils import GLOFAIR_Builder
+from builder import GLOFAIR_Builder
 class BaseRun(ABC):
     def __init__(self,**kwargs):
         
@@ -16,6 +15,7 @@ class BaseRun(ABC):
         self.sensitive_attributes = kwargs.get('sensitive_attributes')
         self.project_name = kwargs.get('project_name')
         self.data_root = kwargs.get('data_root')
+        self.gpu_devices = kwargs.get('gpu_devices')
 
     def compute_group_cardinality(self,group_name):
         for name,group_dict in self.sensitive_attributes:
@@ -157,7 +157,9 @@ class BaseRun(ABC):
         builder = GLOFAIR_Builder(server_config=self.server_config,
                                        clients_config=self.clients_config,
                                       algorithm_config=self.algorithm_config,
-                                      project=self.project_name)
+                                      project=self.project_name,
+                                      gpu_devices=self.gpu_devices,
+                                      num_clients=self.num_clients,)
         
         print('FL initialized')
         print()

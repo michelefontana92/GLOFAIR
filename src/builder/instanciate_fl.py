@@ -4,13 +4,28 @@ from functools import partial
 from requirements import RequirementSet
 from surrogates import SurrogateFunctionSet
 import ray 
+import os 
+
 
 class GLOFAIR_Builder:
+
+    def _assign_resources(self):
+        num_clients = self.num_clients
+        self.num_cpus = num_clients + 1
+        self.num_gpus = len(self.gpu_devices)
+     
+        self.num_gpus_per_client = self.num_gpus//num_clients if self.num_gpus > 0 else 0
+        
+    
     def __init__(self,**kwargs):
+        self.num_clients = kwargs.get('num_clients')
+        self.gpu_devices = kwargs.get('gpu_devices',[]) 
+        self._assign_resources()
         self._server_config = kwargs.get('server_config')
         self._clients_config = kwargs.get('clients_config')
         self._algorithm_config = kwargs.get('algorithm_config')
         self._project = kwargs.get('project')
+        
         assert self._server_config is not None, 'Server config is None'
         assert self._clients_config is not None, 'Clients config is None'
         assert self._algorithm_config is not None, 'Algorithm config is None'
@@ -20,7 +35,7 @@ class GLOFAIR_Builder:
         assert isinstance(self._algorithm_config,dict), "algorithm_config must be a dictionary"
         
         
-       
+        
         self.model = self._algorithm_config.get('model')
         self.loss = self._algorithm_config.get('loss')
         self.metrics = self._algorithm_config.get('metrics')
@@ -64,6 +79,7 @@ class GLOFAIR_Builder:
             self.clients.append(partial(ClientFactory().create,
                 'client_glofair',
                 remote=True,
+                num_gpus=self.num_gpus_per_client,
                 config=c_config,
                 id = c_id,
                 project = self._project,
@@ -114,7 +130,10 @@ class GLOFAIR_Builder:
         )
     
     def run(self):
-        ray.init(num_cpus=len(self._clients_config)+1,num_gpus=1)
+        print('Number of CPUs:',self.num_cpus)
+        print('Number of GPUs:',self.num_gpus)
+        print('Number of GPUs per client:',self.num_gpus_per_client)
+        ray.init(num_cpus=self.num_cpus,num_gpus=self.num_gpus)
         self.server.setup()
         self.server.execute()
         self.server.shutdown()

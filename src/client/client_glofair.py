@@ -11,11 +11,13 @@ from surrogates import SurrogateFunctionSet
 from requirements import RequirementSet
 
 @register_client("client_glofair")
-@ray.remote(num_cpus=1,num_gpus=1)
+@ray.remote
 class ClientGlofair(BaseClient):
     
     def __init__(self, config,data, model, 
                  loss, metrics,**kwargs):
+        
+       
         self.config = config
         self.model = model 
         self.data = data

@@ -12,6 +12,7 @@ import numpy as np
 import torch
 import copy
 
+
 class EarlyStoppingException(Exception):
     pass
 
@@ -60,6 +61,7 @@ class ServerGlofair(BaseServer):
     def _create_clients(self,clients_init_fn_list):
         client_list = [client_init_fn() 
                 for client_init_fn in clients_init_fn_list]
+        print('Clients:',client_list)
         return client_list
     
     
