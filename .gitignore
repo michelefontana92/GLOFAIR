@@ -1,5 +1,5 @@
 *.trunk
-data/*
+#data/*
 src/settings/*
 *.pyc
 src/wandb/*
