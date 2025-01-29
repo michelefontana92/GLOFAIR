@@ -2,6 +2,8 @@
 data/*
 src/settings/*
 *.pyc
+src/wandb/*
+src/checkpoints/*
 # Python specific
 *.py[cod]                # File compilati di Python (.pyc, .pyo, ecc.)
 __pycache__/             # Directory della cache Python
@@ -11,7 +13,6 @@ dist/                    # File di distribuzione
 build/                   # File di build
 *.manifest               # File manifest
 *.spec                   # File spec (per pyinstaller)
-
 # Virtual environment
 venv/                    # Directory del virtual environment
 .env/                    # Nome alternativo del virtual environment

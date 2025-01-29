@@ -119,7 +119,7 @@ class TorchNNMOWrapper(TorchNNWrapper):
             targets = torch.cat(targets, dim=0).detach().cpu()
             predictions = torch.cat(predictions, dim=0).detach().cpu()
             groups_dict = {group_name:torch.cat([batch[group_name] for batch in groups],dim=0).detach().cpu() for group_name in groups[0].keys()}
-            requirements,_ = self.requirement_set.evaluate(y_pred=predictions, 
+            requirements,_,_ = self.requirement_set.evaluate(y_pred=predictions, 
                                                         y_true=targets, 
                                                         group_ids=groups_dict)
         return requirements,loss,outputs,targets,predictions,groups_dict
@@ -216,7 +216,7 @@ class TorchNNMOWrapper(TorchNNWrapper):
         for batch_idx, batch in enumerate(data_loader):
             loss, outputs, targets, predictions = self._validation_step(batch, batch_idx)
             
-            requirements,_ = self.requirement_set.evaluate(y_pred=predictions, 
+            requirements,_,_ = self.requirement_set.evaluate(y_pred=predictions, 
                                                          y_true=targets, 
                                                          group_ids=batch['groups'])
             scores = self._compute_metrics(metrics,

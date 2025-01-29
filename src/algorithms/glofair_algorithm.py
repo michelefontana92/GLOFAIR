@@ -2,7 +2,6 @@ from .base_algorithm import BaseAlgorithm
 from .algorithm_factory import register_algorithm
 from server.server_factory import ServerFactory
 from client.client_factory import ClientFactory
-from client.client_fedfb import ClientFedFB
 import ray
 from functools import partial
 from surrogates import SurrogateFunctionSet

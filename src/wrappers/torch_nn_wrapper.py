@@ -35,6 +35,7 @@ class TorchNNWrapper(BaseWrapper):
         self.verbose = kwargs.get('verbose', False)
         
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        print('DEVICE: ',self.device)
         # Assicurati che il modello sia inizializzato correttamente
        
         
@@ -65,97 +66,7 @@ class TorchNNWrapper(BaseWrapper):
         assert isinstance(self.verbose, bool), "verbose should be a boolean"
         assert isinstance(self.device, torch.device), "device should be an instance of torch.device"
     
-    def serialize(self):
-        """
-        Serializza tutti gli attributi essenziali della classe in un dizionario.
-        """
-         # Gestione della funzione di perdita
-        if isinstance(self.loss_fn, functools.partial):
-            loss_fn_name = self.loss_fn.func.__name__  # Nome della funzione originale
-            loss_fn_args = self.loss_fn.args  # Argomenti posizionali
-            loss_fn_kwargs = self.loss_fn.keywords  # Argomenti con parola chiave
-        else:
-            loss_fn_name = self.loss_fn.__name__ if self.loss_fn else None
-            loss_fn_args = None
-            loss_fn_kwargs = None
 
-        
-        checkpoints_serialized = [
-        {'type': checkpoint.__class__.__name__, 'state': checkpoint.serialize()}
-        for checkpoint in self.checkpoints
-        ]
-        return {
-            'model_state_dict': {k: v.cpu() for k, v in self.model.state_dict().items()},
-            'optimizer_state_dict': self.optimizer.state_dict(),
-            'loss_fn': {
-                'name': loss_fn_name,
-                'args': loss_fn_args,
-                'kwargs': loss_fn_kwargs
-            },
-            'data_module': self.data_module.serialize(),
-            'logger': self.logger.serialize(),
-            'num_epochs': self.num_epochs,
-            'checkpoints': checkpoints_serialized,
-            'metrics': [MetricsFactory.serialize(metric) for metric in self.metrics],
-            'verbose': self.verbose,
-            'device': str(self.device),
-        }
-
-
-    @staticmethod
-    def deserialize(data):
-        """
-        Ricostruisce un'istanza della classe `TorchNNWrapper` dai dati serializzati.
-        """
-        # Ricostruisci la funzione di perdita
-        loss_fn_data = data['loss_fn']
-        if loss_fn_data['name']:
-            loss_fn = getattr(torch.nn, loss_fn_data['name'], None)
-            if loss_fn_data['args'] or loss_fn_data['kwargs']:
-                loss_fn = functools.partial(loss_fn, *loss_fn_data['args'], **loss_fn_data['kwargs'])
-        
-        # Ricostruisci l'istanza
-        instance = TorchNNWrapper(
-            model=torch.nn.Module(),
-            optimizer=None,  # L'ottimizzatore sarà creato successivamente
-            loss=loss_fn,
-            data_module=DataModule.deserialize(data['data_module']),
-            logger=WandbLogger.deserialize(data['logger']),
-            num_epochs=data['num_epochs'],
-            checkpoints=[],
-            metrics=[BaseMetric.deserialize(metric) for metric in data['metrics']],
-            verbose=data['verbose']
-        )
-        
-        # Carica lo stato del modello e dell'ottimizzatore
-        instance.model.load_state_dict(data['model_state_dict'])
-        
-        # Ricrea l'ottimizzatore con lo stato salvato
-        optimizer_class = getattr(torch.optim, data['optimizer_state_dict']['class_name'])  # Recupera la classe dell'ottimizzatore
-        instance.optimizer = optimizer_class(instance.model.parameters(), **data['optimizer_state_dict']['params'])
-        instance.optimizer.load_state_dict(data['optimizer_state_dict']['state_dict'])
-
-        instance.device = torch.device(data['device'])
-        instance.model.to(instance.device)
-
-         # Deserializza i checkpoint
-        for checkpoint_data in data['checkpoints']:
-            checkpoint_type = checkpoint_data['type']
-            checkpoint_state = checkpoint_data['state']
-            
-            # Instanzia il checkpoint in base al tipo salvato
-            if checkpoint_type == 'EarlyStopping':
-                checkpoint = EarlyStopping.deserialize(checkpoint_state)
-            elif checkpoint_type == 'ModelCheckpoint':
-                checkpoint = ModelCheckpoint.deserialize(checkpoint_state)
-            else:
-                raise ValueError(f"Unknown checkpoint type: {checkpoint_type}")
-            
-            instance.checkpoints.append(checkpoint)
-
-        return instance
-
-    
     def _training_step(self,batch,batch_idx):
         self.model.train()
         inputs = batch['data'] 

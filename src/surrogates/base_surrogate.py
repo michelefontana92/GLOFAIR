@@ -1,54 +1,16 @@
 from typing import Any
-from abc import  abstractmethod
 import torch
 from torch.nn.functional import softmax
-from wasserstein import wasserstein_distance_differentiable,wasserstein_distance_threshold
-
-class BaseBinaryWassersteinSurrogate:
-    def __init__(self, **kwargs: Any) -> None:
-        self.group_name = kwargs.get('group_name')
-        self.positive_group_id:int = kwargs.get('positive_group_id')
-        self.negative_group_id:int = kwargs.get('negative_group_id')
-        assert self.positive_group_id != self.negative_group_id, f'positive_group_id and negative_group_id should be different'
-        assert self.positive_group_id is not None, f'positive_group_id should not be None'
-        assert self.negative_group_id is not None, f'negative_group_id should not be None'
-
-    def __call__(self, **kwargs) -> Any:
-        logits = kwargs.get('logits')
-        group_ids_dict: dict = kwargs.get('group_ids')
-        labels = kwargs.get('labels')
-        use_differentiable = kwargs.get('use_differentiable',True)
-        group_ids = group_ids_dict[self.group_name]
-        assert logits.shape[0] == labels.shape[0], f'logits and labels should have the same length'
-        assert logits.shape[0] == group_ids.shape[0], f'logits and group_ids should have the same length'
-        return self._compute_statistic(logits, labels, group_ids_dict,
-                                       use_differentiable=use_differentiable)
-
-
-    def _calculate(self,logits, positive_mask,negative_mask,**kwargs):
-        use_differentiable = kwargs.get('use_differentiable',True)
-        if positive_mask.sum() == 0 or negative_mask.sum() == 0:
-            return 0*(logits.sum())
-        probabilities = softmax(logits, dim=1)[:,1]
-        positive_probabilities = probabilities[positive_mask]
-        negative_probabilities = probabilities[negative_mask]
-        if use_differentiable:
-            surrogate,_,_= wasserstein_distance_differentiable(positive_probabilities,
-                                                               negative_probabilities,
-                                                               p=2)
-        else:
-            surrogate,_,_ = wasserstein_distance_threshold(positive_probabilities,
-                                                           negative_probabilities,
-                                                           p=1)
-        return surrogate
 
 
 class BaseBinarySurrogate:
     def __init__(self, **kwargs: Any) -> None:
         self.group_name = kwargs.get('group_name')
+        self.name = kwargs.get('surrogate_name')
         self.positive_group_id:int = kwargs.get('positive_group_id')
         self.negative_group_id:int = kwargs.get('negative_group_id')
-        self.weight = kwargs.get('weight',1.0)
+        self.weight = kwargs.get('surrogate_weight')
+        print('surrogate self.weight:',self.weight)
         assert self.positive_group_id != self.negative_group_id, f'positive_group_id and negative_group_id should be different'
         assert self.positive_group_id is not None, f'positive_group_id should not be None'
         assert self.negative_group_id is not None, f'negative_group_id should not be None'
@@ -85,7 +47,7 @@ class BaseSurrogate:
         self.reduction = kwargs.get('reduction','mean')
         assert self.reduction in ['min','max','mean'], f'{self.reduction} is not a valid reduction'
         self.reduction_fn = self._init_reduction()
-        self.name = kwargs.get('name','surrogate')
+        self.name = kwargs.get('surrogate_name')
         self.weight = kwargs.get('weight',1.0)
         
     def _init_surrogates(self,surrogate_class:BaseBinarySurrogate):
@@ -96,7 +58,10 @@ class BaseSurrogate:
                self.surrogates.append(surrogate_class(
                    group_name=self.group_name,
                    positive_group_id=current_group_ids[i], 
-                   negative_group_id=current_group_ids[j]))
+                   negative_group_id=current_group_ids[j],
+                   surrogate_weight=self.weight,
+                   surrogate_name=self.name
+                   ))
     
     def _init_reduction(self):
         if self.reduction == 'mean':

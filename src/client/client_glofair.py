@@ -11,7 +11,7 @@ from surrogates import SurrogateFunctionSet
 from requirements import RequirementSet
 
 @register_client("client_glofair")
-@ray.remote(num_cpus=1,num_gpus=0.1)
+@ray.remote(num_cpus=1,num_gpus=1)
 class ClientGlofair(BaseClient):
     
     def __init__(self, config,data, model, 
@@ -64,6 +64,7 @@ class ClientGlofair(BaseClient):
         assert self.training_group_name is not None, "training_group_name must be provided"
     
     def setup(self,**kwargs):
+        print("Setting up client")
         self.global_model_ckpt_path= kwargs.get('global_model_ckpt_path')
 
         self.wrapper = TorchNNMOWrapper(
@@ -79,7 +80,6 @@ class ClientGlofair(BaseClient):
             training_group_name=self.training_group_name,
             requirement_set=self.requirement_set,
             surrogate_functions=self.surrogate_set
-            
            )
 
     def update(self,**kwargs):
