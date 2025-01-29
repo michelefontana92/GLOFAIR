@@ -10,10 +10,43 @@ import os
 from surrogates import SurrogateFunctionSet
 from requirements import RequirementSet
 
+
 @register_client("client_glofair")
 @ray.remote
 class ClientGlofair(BaseClient):
-    
+    """
+    ClientGlofair class for federated learning client.
+    Attributes:
+        config (dict): Configuration dictionary.
+        model (torch.nn.Module): PyTorch model.
+        data (DataModule): Data module for loading data.
+        log_model (bool): Whether to log the model.
+        id (str): Client ID.
+        project (str): Project name.
+        checkpoint_dir (str): Directory for saving checkpoints.
+        checkpoint_name (str): Name of the checkpoint file.
+        optimizer_name (str): Name of the optimizer.
+        verbose (bool): Verbosity mode.
+        fine_tune_epochs (int): Number of epochs for fine-tuning.
+        loss (callable): Loss function.
+        metrics (list): List of metrics.
+        optimizer_fn (callable): Optimizer function.
+        checkpoint_path (str): Path to the checkpoint file.
+        callbacks_fn (list): List of callback functions.
+        logger (WandbLogger): Logger for logging training progress.
+        surrogate_set (SurrogateFunctionSet): Set of surrogate functions.
+        requirement_set (RequirementSet): Set of requirements.
+        training_group_name (str): Name of the training group.
+    Methods:
+        setup(**kwargs): Sets up the client.
+        update(**kwargs): Updates the client with the global model.
+        evaluate(**kwargs): Evaluates the local and global models.
+        evaluate_best_model(**kwargs): Evaluates the best local and global models.
+        _evaluate_global_model(**kwargs): Evaluates the global model.
+        _evaluate_local_model(**kwargs): Evaluates the local model.
+        fine_tune(**kwargs): Fine-tunes the model.
+        shutdown(**kwargs): Shuts down the client.
+    """
     def __init__(self, config,data, model, 
                  loss, metrics,**kwargs):
         

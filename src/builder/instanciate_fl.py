@@ -8,6 +8,44 @@ import os
 
 
 class GLOFAIR_Builder:
+    """
+    A builder class for setting up and running the GLOFAIR federated learning framework.
+    Methods
+    -------
+    __init__(**kwargs)
+        Initializes the GLOFAIR_Builder with the provided configurations.
+    _assign_resources()
+        Assigns the number of CPUs and GPUs based on the number of clients and available GPU devices.
+    run()
+        Runs the federated learning process by initializing Ray, setting up the server, executing the training, and shutting down Ray.
+    """
+    def __init__(self, **kwargs):
+        """
+        Initializes the GLOFAIR_Builder with the provided configurations.
+        Parameters
+        ----------
+        **kwargs : dict
+            A dictionary of configurations including:
+            - num_clients (int): Number of clients.
+            - gpu_devices (list): List of available GPU devices.
+            - server_config (dict): Configuration for the server.
+            - clients_config (list): List of configurations for each client.
+            - algorithm_config (dict): Configuration for the algorithm.
+            - project (str): Project name.
+        Raises
+        ------
+        AssertionError
+            If any of the required configurations (server_config, clients_config, algorithm_config) are None or of incorrect type.
+        """
+        """
+        Assigns the number of CPUs and GPUs based on the number of clients and available GPU devices.
+        """
+        """
+        Runs the federated learning process by initializing Ray, setting up the server, executing the training, and shutting down Ray.
+        Prints
+        ------
+        Number of CPUs, GPUs, and GPUs per client.
+        """
 
     def _assign_resources(self):
         num_clients = self.num_clients

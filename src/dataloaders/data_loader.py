@@ -1,10 +1,35 @@
 from dataloaders.base_loader import BaseDataLoader
-from dataloaders.datasets.adult import AdultDataset
 from torch.utils.data import DataLoader
-import os
 from .datasets import DatasetFactory
 
 class DataModule(BaseDataLoader):
+    """
+    DataModule class for loading and managing datasets.
+    Attributes:
+        kwargs (dict): Keyword arguments for configuring the DataModule.
+        dataset_name (str): Name of the dataset.
+        root (str): Root directory for the dataset.
+        train_set_name (str): Name of the training set.
+        val_set_name (str): Name of the validation set.
+        test_set_name (str): Name of the test set.
+        batch_size (int): Batch size for data loading. Default is 128.
+        num_workers (int): Number of workers for data loading. Default is 0.
+        load_test_set (bool): Flag to indicate whether to load the test set. Default is False.
+        datasets (dict): Dictionary containing the datasets.
+    Methods:
+        _load_data(): Loads the datasets based on the provided paths.
+        train_loader(batch_size=None): Returns a DataLoader for the training set.
+        val_loader(batch_size=None): Returns a DataLoader for the validation set.
+        test_loader(batch_size=None): Returns a DataLoader for the test set.
+        train_loader_eval(batch_size=None): Returns a DataLoader for evaluating the training set.
+        get_input_dim(): Returns the input dimension of the training set.
+        get_class_weights(): Returns the class weights of the training set.
+        merge(datamodule_list): Merges the datasets from a list of DataModules.
+        get_group_ids(): Returns the group IDs of the training set.
+        get_group_cardinality(y, group_id, training_group_name): Returns the group cardinality of the training set.
+        serialize(): Serializes the DataModule.
+        deserialize(data): Reconstructs an instance of DataModule from serialized data.
+    """
     def __init__(self, **kwargs):
         self.kwargs = kwargs
         

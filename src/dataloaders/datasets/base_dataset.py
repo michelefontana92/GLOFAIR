@@ -1,4 +1,3 @@
-from abc import ABC, abstractmethod
 from torch.utils.data import Dataset
 import os
 import pandas as pd
@@ -11,6 +10,49 @@ import pickle as pkl
 
 pd.set_option('future.no_silent_downcasting', True)
 class BaseDataset(Dataset):
+    """
+    BaseDataset is a custom dataset class that extends the PyTorch Dataset class. It is designed to handle datasets with 
+    categorical and numerical features, sensitive attributes, and optional class weights and local weights for reweighing.
+    Attributes:
+        root (str): Root directory for the dataset.
+        data_name (str): Name of the data file.
+        data_path (str): Full path to the data file.
+        target (str): Name of the target column.
+        cat_cols (list): List of categorical columns.
+        num_cols (list): List of numerical columns.
+        sensitive_attributes (list): List of sensitive attributes.
+        scaler_name (str): Name of the scaler file.
+        scaler_path (str): Full path to the scaler file.
+        clean_data_path (str): Path to the clean data file.
+        use_class_weights (bool): Flag to use class weights.
+        use_local_weights (bool): Flag to use local weights.
+        id_to_combination_dict (dict): Dictionary mapping IDs to combinations of sensitive attributes.
+        x (torch.Tensor): Feature tensor.
+        y (torch.Tensor): Target tensor.
+        positive_mask (torch.Tensor): Mask for positive samples.
+        groups (dict): Dictionary of group tensors.
+        groups_tensor (dict): Dictionary of group tensors.
+        local_weights (dict): Dictionary of local weights tensors.
+        data (pd.DataFrame): DataFrame containing the dataset.
+        num_features (int): Number of features in the dataset.
+        class_weights (torch.Tensor): Tensor of class weights.
+        group_ids (dict): Dictionary of group IDs.
+    Methods:
+        setup(): Sets up the dataset by loading and preprocessing the data.
+        data_preprocessing(data: pd.DataFrame): Preprocesses the data.
+        _fit_scaler(): Fits the scaler to the clean data.
+        _preprocess(data): Preprocesses the data using the fitted scaler.
+        _load_dataset(load_data=True): Loads the dataset from the data file.
+        _compute_class_weight(data: pd.DataFrame): Computes class weights for the dataset.
+        __len__(): Returns the length of the dataset.
+        __getitem__(index): Returns a sample from the dataset at the given index.
+        get_class_weights(): Returns the class weights.
+        get_group_ids(): Returns the group IDs.
+        get_num_groups(group_name): Returns the number of groups for a given group name.
+        get_group_cardinality(y, group_id, training_group_name): Returns the cardinality of a group.
+        _compute_local_reweighing(df: pd.DataFrame, group_name: str, sensitive_dict: dict): Computes local reweighing for the dataset.
+        merge(dataset): Merges the current dataset with another dataset.
+    """
     def __init__(self, **kwargs):
         super(BaseDataset, self).__init__()
         self.root = kwargs.get('root', 'data')

@@ -1,6 +1,32 @@
 import os
 
 class ModelCheckpoint:
+    """
+    ModelCheckpoint is a class that saves the model based on the monitored metric.
+    Attributes:
+        save_dir (str): Directory where the model will be saved.
+        save_name (str): Name of the saved model file.
+        monitor (str): Metric to monitor. Default is 'val_loss'.
+        mode (str): Mode to monitor the metric. 'min' for minimum and 'max' for maximum. Default is 'min'.
+        best (float): Best value of the monitored metric.
+    Methods:
+        __init__(save_dir, save_name, monitor='val_loss', mode='min', check_fn=None):
+            Initializes the ModelCheckpoint with the given parameters.
+        set_check_fn(check_fn: callable):
+            Sets the custom check function.
+        check(**kwargs):
+            Checks if the current metric is better than the best metric.
+        __call__(**kwargs):
+            Calls the ModelCheckpoint to save the model if the current metric is better.
+        get_model_path():
+            Returns the path of the saved model.
+        get_best():
+            Returns the best value of the monitored metric.
+        get_best_metric():
+            Returns a dictionary with the monitored metric and its best value.
+        reset():
+            Resets the best value of the monitored metric.
+    """
     def __init__(self, save_dir, save_name, 
                  monitor='val_loss', mode='min',
                  check_fn = None):
@@ -51,29 +77,3 @@ class ModelCheckpoint:
     
     def reset(self):
         self.best = None
-
-    def serialize(self):
-        """
-        Serializza l'oggetto ModelCheckpoint in un dizionario.
-        """
-        return {
-            'save_dir': self.save_dir,
-            'save_name': self.save_name,
-            'monitor': self.monitor,
-            'mode': self.mode,
-            'best': self.best
-        }
-
-    @staticmethod
-    def deserialize(data):
-        """
-        Ricostruisce un oggetto ModelCheckpoint dai dati serializzati.
-        """
-        instance = ModelCheckpoint(
-            save_dir=data['save_dir'],
-            save_name=data['save_name'],
-            monitor=data['monitor'],
-            mode=data['mode']
-        )
-        instance.best = data['best']
-        return instance

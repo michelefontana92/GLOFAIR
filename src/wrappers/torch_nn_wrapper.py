@@ -4,23 +4,25 @@
 from wrappers.base_wrapper import BaseWrapper
 import torch 
 import tqdm
-import numpy as np
 from loggers import BaseLogger
 from callbacks import EarlyStopping, ModelCheckpoint
 from dataloaders import DataModule
-from loggers import WandbLogger,BaseLogger,FileLogger
+from loggers import BaseLogger
 from dataloaders import DataModule
 from metrics import BaseMetric,Performance,GroupFairnessMetric
-import tqdm
-from sklearn.metrics import f1_score, classification_report,confusion_matrix
-from torchmetrics import ConfusionMatrix,F1Score
-import functools
-from metrics import MetricsFactory
 class EarlyStoppingException(Exception):
     pass
 
 class TorchNNWrapper(BaseWrapper):
-    
+    """
+    A wrapper class for training, validating, and evaluating PyTorch neural networks.
+    Attributes:
+        model (torch.nn.Module): The neural network model.
+        optimizer (torch.optim.Optimizer): The optimizer for training the model.
+        loss_fn (callable): The loss function used for training.
+        data_module (DataModule): The data module providing data loaders.
+        logger (BaseLogger): The logger for logging metrics and other information.
+    """
     def __init__(self, *args, **kwargs):
         super().__init__()
         

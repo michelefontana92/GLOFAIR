@@ -1,11 +1,27 @@
 import os
-
-from pandas import DataFrame
 from .dataset_factory import register_dataset
 from .base_dataset import BaseDataset
 
 @register_dataset('credit')
 class CreditDataset(BaseDataset):
+    """
+    CreditDataset class for loading and processing credit data.
+    This class is registered as a dataset with the name 'credit' and inherits from BaseDataset.
+    Attributes:
+        root (str): Root directory for the dataset. Defaults to 'data/Credit'.
+        data_path (str): Path to the dataset file.
+        scaler_name (str): Name of the scaler file. Defaults to 'credit_scalers.p'.
+        sensitive_attributes (list): List of sensitive attributes. Defaults to [{}].
+        scaler_path (str): Path to the scaler file.
+        target (str): Target column name. Defaults to 'default.payment.next.month'.
+        cat_cols (list): List of categorical columns.
+        num_cols (list): List of numerical columns.
+        labels (list): List of labels. Defaults to [0, 1].
+        clean_data_path (str): Path to the cleaned data file.
+    Methods:
+        __init__(**kwargs): Initializes the CreditDataset with the given keyword arguments.
+        setup(): Sets up the dataset for use.
+    """
 
     def __init__(self,**kwargs):
         super(CreditDataset, self).__init__(**kwargs)

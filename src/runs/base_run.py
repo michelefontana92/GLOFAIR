@@ -8,6 +8,28 @@ from surrogates import SurrogateFactory,SurrogateFunctionSet
 from requirements import RequirementSet, UnconstrainedRequirement, ConstrainedRequirement
 from builder import GLOFAIR_Builder
 class BaseRun(ABC):
+    """
+    BaseRun is an abstract base class that provides a framework for running experiments with a machine learning model.
+    Attributes:
+        model: The machine learning model to be used.
+        dataset: The dataset to be used.
+        sensitive_attributes: Attributes that are considered sensitive for fairness evaluation.
+        project_name: The name of the project.
+        data_root: The root directory for the data.
+        gpu_devices: The GPU devices to be used.
+    Methods:
+        __init__(**kwargs): Initializes the BaseRun with the provided keyword arguments.
+        compute_group_cardinality(group_name): Computes the cardinality of a given group based on sensitive attributes.
+        init_run(**kwargs): Initializes the run with the provided keyword arguments.
+        build_server_config(**kwargs): Builds the server configuration.
+        build_client_config(**kwargs): Builds the client configuration.
+        build_algorithm_config(**kwargs): Builds the algorithm configuration.
+        init_fl(**kwargs): Initializes federated learning with the provided configurations.
+        setUp(): Abstract method to set up the experiment.
+        tearDown(): Abstract method to tear down the experiment.
+        run(): Abstract method to run the experiment.
+        __call__(): Calls the setUp, run, and tearDown methods in sequence.
+    """
     def __init__(self,**kwargs):
         
         self.model = kwargs.get('model')
@@ -149,10 +171,6 @@ class BaseRun(ABC):
         self.build_server_config(**kwargs)
         self.build_client_config(**kwargs)
         self.build_algorithm_config(**kwargs)
-        print('Server config:',self.server_config)
-        print('Algorithm config:',self.algorithm_config)
-        for c in self.clients_config:
-            print(c)
         
         builder = GLOFAIR_Builder(server_config=self.server_config,
                                        clients_config=self.clients_config,
@@ -161,8 +179,6 @@ class BaseRun(ABC):
                                       gpu_devices=self.gpu_devices,
                                       num_clients=self.num_clients,)
         
-        print('FL initialized')
-        print()
         return builder
         
     

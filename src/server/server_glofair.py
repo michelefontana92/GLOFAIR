@@ -18,6 +18,48 @@ class EarlyStoppingException(Exception):
 
 @register_server("server_glofair")
 class ServerGlofair(BaseServer):
+    """
+    ServerGlofair class for federated learning.
+    Attributes:
+        config (dict): Configuration dictionary.
+        clients_init_fn_list (list): List of client initialization functions.
+        model (torch.nn.Module): The model to be trained.
+        loss (torch.nn.Module): Loss function.
+        metrics (list): List of metrics for evaluation.
+        log_model (bool): Flag to log the model.
+        id (str): Server ID.
+        project (str): Project name.
+        checkpoint_dir (str): Directory to save checkpoints.
+        checkpoint_name (str): Name of the checkpoint file.
+        verbose (bool): Verbosity mode.
+        federated_rounds (int): Number of federated learning rounds.
+        callbacks (list): List of callbacks for training.
+        logger (WandbLogger): Logger for tracking experiments.
+        aggregator (Aggregator): Aggregator for federated learning.
+    Methods:
+        _create_clients(clients_init_fn_list):
+            Creates and initializes clients.
+        _broadcast_fn(fn_name, **kwargs):
+            Broadcasts a function to all clients and collects results.
+        _evaluate_best_model():
+            Evaluates the best model saved during training.
+        _evaluate_global_model(best_model=False):
+            Evaluates the global model.
+        setup(**kwargs):
+            Sets up the server and clients.
+        step(**kwargs):
+            Executes one federated learning round.
+        execute(**kwargs):
+            Executes the federated learning process.
+        centralized_training(**kwargs):
+            Performs centralized training.
+        evaluate(**kwargs):
+            Evaluates the global model.
+        fine_tune(**kwargs):
+            Fine-tunes the global model.
+        shutdown(**kwargs):
+            Shuts down the server and evaluates the best model.
+    """
     def __init__(self,**kwargs):
         
         self.config = kwargs.get('config')

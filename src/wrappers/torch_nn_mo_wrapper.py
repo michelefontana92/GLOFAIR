@@ -9,6 +9,34 @@ class EarlyStoppingException(Exception):
     pass
 
 class TorchNNMOWrapper(TorchNNWrapper):
+    """
+    A wrapper class for a multi-objective neural network model using PyTorch.
+    Args:
+        *args: Variable length argument list.
+        **kwargs: Arbitrary keyword arguments.
+            - training_group_name (str): The name of the training group.
+            - requirement_set (RequirementSet): The set of requirements for evaluation.
+            - surrogate_functions (list[(callable, float)]): List of surrogate functions for evaluation.
+    Attributes:
+        training_group_name (str): The name of the training group.
+        requirement_set (RequirementSet): The set of requirements for evaluation.
+        surrogate_functions (list[(callable, float)]): List of surrogate functions for evaluation.
+    Methods:
+        _training_step(batch, batch_idx):
+            Performs a single training step.
+        _validation_step(batch, batch_idx):
+            Performs a single validation step.
+        _compute_kwargs(batch, outputs):
+            Computes the keyword arguments required for evaluation.
+        _evaluate_requirements(data_loader):
+            Evaluates the requirements on the given data loader.
+        _update_metrics(**kwargs):
+            Updates the metrics for training and validation.
+        fit(**kwargs):
+            Trains the model for a specified number of epochs.
+        score(data_loader, metrics, prefix=''):
+            Scores the model on the given data loader using specified metrics.
+    """
     def __init__(self,*args, **kwargs):
         super(TorchNNMOWrapper,self).__init__(*args, **kwargs)
         self.training_group_name:str = kwargs.get('training_group_name')
