@@ -1,6 +1,6 @@
 *.trunk
 data/*
-settings/*
+src/settings/*
 *.pyc
 # Python specific
 *.py[cod]                # File compilati di Python (.pyc, .pyo, ecc.)

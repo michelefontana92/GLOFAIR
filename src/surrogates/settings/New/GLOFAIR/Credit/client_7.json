@@ -1,0 +1,94 @@
+{
+    "algo":"stateful",
+    "meta":{
+        "id":"Client_7",
+        "log_dir":"logs",
+        "log_file":"client_7_log.txt",
+        "checkpoint_dir":"final_models",
+        "checkpoint_file":"client_7_model.pt"
+    },
+
+    "data":{
+        "root":"data/Credit",
+        "dataset":"credit",
+        "train":"node_37/credit_train.csv",
+        "validation":"node_37/credit_val.csv",
+        "sensible_groups":{
+             "Group_Gender": {
+                "SEX": {
+                     "privileged": "Male",
+                     "unprivileged": "Female"
+                     }
+                 },
+            "Group_Race": {
+                "AGE": {
+                     "privileged": "40+",
+                     "unprivileged": "20-40"
+                     }
+                 }
+    }
+},
+
+    "training":{
+        "pre_training":{
+            "epochs":10,
+            "lr":1e-4,
+            "batch_size": 128
+        },
+
+        "method": "p_norm",
+        "p": 2,
+        "weights": [[0.5,0.8,0.8
+                   ]],
+        "objectives": [
+            ["CrossEntropyLoss","Group_Gender"],
+            ["DDPRel","Group_Gender"],
+            ["DDPRel","Group_Race"]
+                   
+        ],
+        "scores": [["F1","Group_Race"],
+                    ["DDP","Group_Gender"],
+                    ["DDP","Group_Race"]
+                    ],
+        "pareto_weights": [1,-1,-1],
+        "pareto_logdir": "ParetoFront",
+        "num_starts": 1,
+        "epochs": 3,
+        "lr": 1e-4,
+        "batch_size": 128,
+        "verbose": false,
+        "personalization_epochs":20,
+        "ranking_function":"default",
+
+    "model": "MLP2Hidden",
+       "model_params": {
+        "input": 92,
+        "hidden1": 512,
+        "hidden2": 256,
+        "dropout": 0.2,
+        "output": 2
+        }
+    },
+
+    "monitor":{
+        "monitor_log_dir":"monitors",
+        "monitor_in_log_file":"monitor_in_client_7_log.txt",
+        "monitor_out_log_file":"monitor_out_client_7_log.txt",
+        "scores":["F1","DDP","DEO"],
+        "monitor_in_save_file": "monitor_in_client_7.p",
+        "monitor_out_save_file": "monitor_out_client_7.p"
+    },
+
+
+    "distiller":{
+        "temperature":1,
+        "alpha":1,
+        "beta":2,
+        "lr":1e-4,
+        "epochs":20,
+        "patience":10
+    },
+
+    "rl_checkpoint":"data/Adult/RL_Checkpoints/Client_7/checkpoint"
+    
+}
