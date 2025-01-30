@@ -21,7 +21,26 @@ import os
 def main(run, project_name, num_clients, metric_name, id,
          use_wandb, onlyperf, threshold,gpu_devices,
          metrics_list, groups_list, threshold_list,experiment):
-
+    """
+    Main entry point for the CLI application.
+    This function sets up and executes a run based on the provided command-line options.
+    Parameters:
+        run (str): The name of the run to execute.
+        project_name (str): The name of the project.
+        num_clients (int): The number of clients.
+        metric_name (str): The name of the metric to use.
+        id (str): The run identifier.
+        use_wandb (bool): Flag to indicate whether to use wandb logger.
+        onlyperf (bool): Flag to indicate whether to monitor only performance.
+        threshold (float): The fairness threshold.
+        gpu_devices (tuple): A tuple of GPU device identifiers.
+        metrics_list (tuple): A tuple of metrics.
+        groups_list (tuple): A tuple of groups.
+        threshold_list (tuple): A tuple of thresholds.
+        experiment (str): The name of the experiment.
+    Returns:
+        None
+    """
     if gpu_devices:
         os.environ["CUDA_VISIBLE_DEVICES"] = ",".join(gpu_devices)
     else:

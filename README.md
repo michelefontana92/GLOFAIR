@@ -1,42 +1,162 @@
 # GLOFAIR
 
-`GLOFAIR` is a a methodology that exploits Multi-Objective Optimization to mitigate unfair behavior of the models learned in the federation by both maximizing predictive performance and satisfying a set of fairness constraints.
-Unlike many existing methods in the literature, which typically address a single fairness metric or sensitive attribute at a
-time, `GLOFAIR` accommodates multiple fairness constraints simultaneously differing in terms of fairness metrics and sensitive attributes.
+`GLOFAIR` is a methodology that leverages **Multi-Objective Optimization** to mitigate unfair behavior in federated learning by **maximizing predictive performance** while satisfying a **set of fairness constraints**. 
 
-## Installation
-We suggest to create a new conda environment with Python >= 3.9.
+Unlike many existing methods that typically address a **single fairness metric** or **one sensitive attribute at a time**, `GLOFAIR` is designed to accommodate **multiple fairness constraints simultaneously**, varying in terms of fairness metrics and sensitive attributes.
 
-To install the package, follow these steps:
-1. Clone the repository:
+---
+
+## **Installation**
+
+We recommend setting up a new Conda environment with **Python >= 3.9**.
+
+### **1. Create a Conda environment**
+```bash
+conda create -n "glofair" python==3.9
+```
+
+### **2. Activate the environment**
+```bash
+conda activate glofair
+```
+
+### **3. Clone the repository**
+```bash
+git clone https://github.com/michelefontana92/GLOFAIR
+```
+
+### **4. Navigate to the project directory**
+```bash
+cd GLOFAIR
+```
+
+### **5. Install dependencies**
+```bash
+pip install -r requirements.txt
+```
+
+---
+
+## **Project Structure**
+The project follows this structure:
+
+```bash
+.
+├── LICENSE
+├── README.md
+├── data
+│   ├── Adult
+│   ├── Compas
+│   └── Credit
+├── requirements.txt
+└── src
+    ├── architectures
+    ├── builder
+    ├── callbacks
+    ├── client
+    ├── dataloaders
+    ├── loggers
+    ├── main.py
+    ├── metrics
+    ├── requirements
+    ├── runs
+    ├── server
+    ├── surrogates
+    └── wrappers
+```
+
+- **`data/`** → Contains federated datasets used in experiments.
+- **`src/`** → Contains the core implementation of GLOFAIR.
+
+---
+
+## **Usage**
+To run an experiment with `GLOFAIR`:
+
+### **1. Navigate to the `src` directory**
+```bash
+cd src
+```
+
+### **2. Execute `main.py` with options**
+```bash
+python main.py --options
+```
+
+### **Available Options**
+```bash
+Options:
+  -r, --run TEXT              Name of the run to execute
+  -p, --project_name TEXT     Name of the WandB project
+  -n, --num_clients INTEGER   Number of clients (default = 10)
+  -ml, --metrics_list TEXT    List of fairness metrics
+  -gl, --groups_list TEXT     List of sensitive groups
+  -tl, --threshold_list FLOAT Threshold values for fairness constraints
+  -g, --gpu_devices TEXT      List of GPUs to use
+```
+
+#### **Predefined Runs (`runs` folder)**
+- **`adult_glofair`** → Uses the **Adult** dataset.
+- **`compas_glofair`** → Uses the **Compas** dataset.
+- **`credit_glofair`** → Uses the **Credit** dataset.
+
+The code supports the following **fairness metrics**:
+- `demographic_parity`
+- `equal_opportunity`
+- `predictive_equality`
+- `equalized_odds`
+
+---
+
+## **Logging**
+The code uses **Weights & Biases (WandB)** for experiment tracking. 
+To use it:
+1. Create a free account at [WandB](https://wandb.ai/site/).
+2. Follow the login instructions after executing the code.
+
+We plan to allow users to choose other logging systems in the future.
+
+---
+
+## **GPU Execution**
+The code can be executed on a **CPU** or **GPU(s)**.
+
+- To specify GPU(s), use the `-g` option:
     ```bash
-    git clone https://github.com/michelefontana92/GLOFAIR
+    python main.py -g 0
     ```
-2. Navigate to the project directory:
-    ```bash
-    cd GLOFAIR
-    ```
-3. Install the dependencies:
-    ```bash
-    pip install -r requirements.txt
-    ```
+- If `-g` is not provided, execution will default to CPU.
 
-## Code Structure
+---
 
-The code has the following structure
+## **Examples**
 
-## Usage
+### **1. One Fairness Constraint**
+Create a federation with 10 clients enforcing **Demographic Parity (DP ≤ 0.20) on Gender** using the **Adult** dataset, running on **GPU 0**.
+```bash
+python main.py -r adult_glofair -ml demographic_parity -tl 0.20 -gl Gender -p Adult_Gender -g 0
+```
 
-To use the project, follow these steps:
+### **2. Mixed Fairness Metrics**
+Create a federation with 10 clients enforcing **DP ≤ 0.20 on Gender** and **Equalized Odds (EOD ≤ 0.20) on Gender**, using the **Adult** dataset and running on **GPU 0**.
+```bash
+python main.py -r adult_glofair -ml demographic_parity -tl 0.20 -gl Gender -ml equalized_odds -tl 0.20 -gl Gender -p Adult_Mixed -g 0
+```
 
-1. [Step 1]
-2. [Step 2]
-3. [Step 3]
+### **3. Three Fairness Constraints**
+Create a federation with 10 clients enforcing **DP ≤ 0.20 on Gender, DP ≤ 0.20 on Race, and DP ≤ 0.20 on GenderRace**, using the **Adult** dataset on **GPU 0**.
+```bash
+python main.py -r adult_glofair -ml demographic_parity -tl 0.20 -gl Gender -ml demographic_parity -tl 0.20 -gl Race -ml demographic_parity -tl 0.20 -gl GenderRace -p Adult_ThreeConstraints -g 0
+```
 
-## License
+---
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
+## **License**
+This project is licensed under the **Apache 2.0 License**. See the [LICENSE](LICENSE) file for details.
 
-## Contact
+---
 
-For any questions or suggestions, please write an email to <michele.fontana@phd.unipi.it>.
+## **Contact**
+For any questions or suggestions, feel free to reach out:
+
+📧 **Email**: [michele.fontana@phd.unipi.it](mailto:michele.fontana@phd.unipi.it)

@@ -4,7 +4,7 @@ src/settings/*
 *.pyc
 src/wandb/*
 src/checkpoints/*
-src/logs/*
+
 # Python specific
 *.py[cod]                # File compilati di Python (.pyc, .pyo, ecc.)
 __pycache__/             # Directory della cache Python
