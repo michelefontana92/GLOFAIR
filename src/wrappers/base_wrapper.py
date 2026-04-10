@@ -1,5 +1,7 @@
 # Define the BaseWrapper abstract class, which is a wrapper for a black box ML model
 from abc import ABC, abstractmethod
+
+
 class BaseWrapper(ABC):
     """
     BaseWrapper is an abstract base class that defines the interface for a machine learning model wrapper.
@@ -16,7 +18,7 @@ class BaseWrapper(ABC):
     load(path)
         Abstract method to load the model from the specified path.
     """
-    
+
     @abstractmethod
     def predict(self, data_loader):
         pass
@@ -24,19 +26,15 @@ class BaseWrapper(ABC):
     @abstractmethod
     def predict_proba(self, data_loader):
         pass
-    
+
     @abstractmethod
-    def score(self, data_loader,metrics):
+    def score(self, data_loader, metrics):
         pass
 
-    @abstractmethod    
+    @abstractmethod
     def save(self, path):
         pass
-    
+
     @abstractmethod
     def load(self, path):
         pass
-
-   
-
-    

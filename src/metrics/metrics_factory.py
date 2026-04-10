@@ -1,4 +1,5 @@
-_METRICS={}
+_METRICS = {}
+
 
 def register_metric(metric_name):
     def decorator(fn):
@@ -6,13 +7,14 @@ def register_metric(metric_name):
         return fn
     return decorator
 
+
 class MetricsFactory:
     @staticmethod
     def create_metric(metric_name, **kwargs):
         if metric_name not in _METRICS:
             raise ValueError(f"Unknown metric: {metric_name}")
         return _METRICS[metric_name](**kwargs)
-    
+
     @staticmethod
     def serialize(metric_instance):
         """
@@ -20,7 +22,8 @@ class MetricsFactory:
         """
         metric_type = type(metric_instance).__name__
         metric_name = next(
-            (name for name, cls in _METRICS.items() if isinstance(metric_instance, cls)),
+            (name for name, cls in _METRICS.items()
+             if isinstance(metric_instance, cls)),
             None
         )
         if metric_name is None:
@@ -39,6 +42,7 @@ class MetricsFactory:
         if metric_name not in _METRICS:
             raise ValueError(f"Metric {metric_name} non registrata.")
         metric_cls = _METRICS[metric_name]
-        instance = metric_cls.__new__(metric_cls)  # Crea l'istanza senza chiamare __init__
+        # Crea l'istanza senza chiamare __init__
+        instance = metric_cls.__new__(metric_cls)
         instance.__dict__.update(data['params'])  # Ripristina lo stato interno
         return instance

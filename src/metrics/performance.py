@@ -1,14 +1,15 @@
-from torchmetrics import Accuracy, Precision, Recall,F1Score
+from torchmetrics import Accuracy, Precision, Recall, F1Score
 from .metrics_factory import register_metric
 from .base_metric import BaseMetric
 import torch
 
+
 @register_metric('performance')
 class Performance(BaseMetric):
-    def __init__(self,**kwargs):
-        task = kwargs.get('task','multiclass')
-        num_classes = kwargs.get('num_classes',2)
-        average = kwargs.get('average','weighted')
+    def __init__(self, **kwargs):
+        task = kwargs.get('task', 'multiclass')
+        num_classes = kwargs.get('num_classes', 2)
+        average = kwargs.get('average', 'weighted')
         self.device = 'cuda' if torch.cuda.is_available() else 'cpu'
         self.accuracy = Accuracy(task=task,
                                  num_classes=num_classes).to(self.device)
@@ -21,10 +22,10 @@ class Performance(BaseMetric):
         self.f1 = F1Score(task='multiclass',
                           num_classes=num_classes,
                           average='weighted').to(self.device)
-        
+
     def calculate(self, y_pred, y_true):
-        #print('Y_pred: ',y_pred[:10])
-        #print('Y_true: ',y_true[:10])
+        # print('Y_pred: ',y_pred[:10])
+        # print('Y_true: ',y_true[:10])
         y_pred = y_pred.to(self.device)
         y_true = y_true.to(self.device)
         self.accuracy.update(y_pred, y_true)
@@ -45,4 +46,3 @@ class Performance(BaseMetric):
         self.precision.reset()
         self.recall.reset()
         self.f1.reset()
-

@@ -2,6 +2,7 @@ import os
 from .dataset_factory import register_dataset
 from .base_dataset import BaseDataset
 
+
 @register_dataset('credit')
 class CreditDataset(BaseDataset):
     """
@@ -23,20 +24,20 @@ class CreditDataset(BaseDataset):
         setup(): Sets up the dataset for use.
     """
 
-    def __init__(self,**kwargs):
+    def __init__(self, **kwargs):
         super(CreditDataset, self).__init__(**kwargs)
         self.root = kwargs.get('root', 'data/Credit')
         data_name = kwargs['filename']
 
         self.data_path = os.path.join(self.root, data_name)
-        
-        self.scaler_name = kwargs.get('scaler_name', 
+
+        self.scaler_name = kwargs.get('scaler_name',
                                       'credit_scalers.p')
         self.sensitive_attributes = kwargs.get('sensitive_attributes',
-                                                [{}])
-       
+                                               [{}])
+
         self.scaler_path = f'{self.root}/{self.scaler_name}'
-        
+
         self.target = 'default.payment.next.month'
         self.cat_cols = [
             'EDUCATION', 'MARRIAGE', 'PAY_0', 'PAY_2',
@@ -50,15 +51,6 @@ class CreditDataset(BaseDataset):
             'PAY_AMT2', 'PAY_AMT3', 'PAY_AMT4',
             'PAY_AMT5', 'PAY_AMT6'
         ]
-        self.labels = [0,1]
-        self.clean_data_path = os.path.join(self.root,'fake_credit_age.csv')
+        self.labels = [0, 1]
+        self.clean_data_path = os.path.join(self.root, 'fake_credit_age.csv')
         self.setup()
-    
-   
-        
-        
-        
-        
-    
-
-    

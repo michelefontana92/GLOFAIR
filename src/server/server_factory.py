@@ -1,10 +1,12 @@
 _SERVERS = {}
 
+
 def register_server(server_type):
     def decorator(fn):
         _SERVERS[server_type] = fn
         return fn
     return decorator
+
 
 class ServerFactory:
     @staticmethod

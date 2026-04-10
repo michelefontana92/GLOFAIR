@@ -1,15 +1,15 @@
 from abc import ABC, abstractmethod
 
+
 class BaseDataLoader(ABC):
     @abstractmethod
     def train_loader(self):
-        pass 
+        pass
 
     @abstractmethod
     def val_loader(self):
-        pass 
-    
+        pass
+
     @abstractmethod
     def test_loader(self):
-        pass 
-    
+        pass

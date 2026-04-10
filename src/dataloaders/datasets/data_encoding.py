@@ -4,6 +4,7 @@ from sklearn.preprocessing import StandardScaler, OneHotEncoder, LabelEncoder
 
 def fit_scalers(df_orig, categorical_cols,
                 numerical_cols, label_encoder_cols):
+
     scalers = {}
     for cat in categorical_cols:
         scalers[cat] = OneHotEncoder(sparse_output=False).fit(df_orig[[cat]])

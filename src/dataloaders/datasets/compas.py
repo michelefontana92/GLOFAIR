@@ -2,6 +2,7 @@ import os
 from .dataset_factory import register_dataset
 from .base_dataset import BaseDataset
 
+
 @register_dataset('compas')
 class CompasDataset(BaseDataset):
     """
@@ -20,20 +21,21 @@ class CompasDataset(BaseDataset):
     Methods:
         __init__(**kwargs): Initializes the CompasDataset with the given parameters.
     """
-    def __init__(self,**kwargs):
+
+    def __init__(self, **kwargs):
         super(CompasDataset, self).__init__(**kwargs)
         self.root = kwargs.get('root', 'data/Compas')
         data_name = kwargs['filename']
 
         self.data_path = os.path.join(self.root, data_name)
-        
-        self.scaler_name = kwargs.get('scaler_name', 
+
+        self.scaler_name = kwargs.get('scaler_name',
                                       'compas_scalers.p')
         self.sensitive_attributes = kwargs.get('sensitive_attributes',
-                                                [{}])
-       
+                                               [{}])
+
         self.scaler_path = f'{self.root}/{self.scaler_name}'
-        
+
         self.target = 'two_year_recid'
         self.cat_cols = [
             'c_charge_degree',
@@ -53,13 +55,6 @@ class CompasDataset(BaseDataset):
             'juv_other_count',
             'c_days_from_compas'
         ]
-        self.labels = [0,1]
-        self.clean_data_path = os.path.join(self.root,'fake_compas.csv')
+        self.labels = [0, 1]
+        self.clean_data_path = os.path.join(self.root, 'fake_compas.csv')
         self.setup()
-        
-        
-        
-        
-    
-
-    

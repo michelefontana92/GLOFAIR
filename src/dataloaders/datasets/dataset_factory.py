@@ -1,15 +1,18 @@
 import torch
-_DATASETS ={}
+_DATASETS = {}
+
 
 def register_dataset(dataset):
     def decorator(cls):
         if dataset in _DATASETS:
             raise ValueError(f"Cannot register duplicate dataset ({dataset})")
         if not issubclass(cls, torch.utils.data.Dataset):
-            raise ValueError(f"Dataset ({dataset}: {cls.__name__}) must extend BaseDataset")
+            raise ValueError(
+                f"Dataset ({dataset}: {cls.__name__}) must extend BaseDataset")
         _DATASETS[dataset] = cls
         return cls
     return decorator
+
 
 class DatasetFactory:
     @staticmethod
@@ -26,7 +29,8 @@ class DatasetFactory:
         dataset_type = type(dataset_instance).__name__
         # Usa il nome registrato, non il nome della classe
         dataset_name = next(
-            (name for name, cls in _DATASETS.items() if isinstance(dataset_instance, cls)),
+            (name for name, cls in _DATASETS.items()
+             if isinstance(dataset_instance, cls)),
             None
         )
         if dataset_name is None:
@@ -45,7 +49,7 @@ class DatasetFactory:
         if dataset_name not in _DATASETS:
             raise ValueError(f"Dataset {dataset_name} non registrato.")
         dataset_cls = _DATASETS[dataset_name]
-        instance = dataset_cls.__new__(dataset_cls)  # Crea l'istanza senza chiamare __init__
+        # Crea l'istanza senza chiamare __init__
+        instance = dataset_cls.__new__(dataset_cls)
         instance.__dict__.update(data['state'])  # Ripristina lo stato interno
         return instance
-

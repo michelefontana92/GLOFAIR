@@ -3,6 +3,7 @@ import os
 from icecream import ic
 from .logger_factory import register_logger
 
+
 @register_logger("file")
 class FileLogger(BaseLogger):
     def __init__(self, **kwargs):
@@ -20,16 +21,16 @@ class FileLogger(BaseLogger):
     def reset(self):
         with open(self.file_path, 'w') as file:
             file.write('')
-    
+
     def log(self, message):
         def output_fn(message):
             with open(self.file_path, 'a') as file:
                 file.write(f'{message}\n')
-        
+
         ic.configureOutput(prefix=self.prefix,
                            includeContext=self.include_context,
                            outputFunction=output_fn)
-        
+
         ic(message)
 
     def error(self, message):
@@ -40,6 +41,6 @@ class FileLogger(BaseLogger):
 
     def debug(self, message):
         self.log(f'[DEBUG] {message}')
-    
+
     def close(self):
         pass

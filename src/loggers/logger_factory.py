@@ -1,10 +1,12 @@
 _LOGGERS = {}
 
+
 def register_logger(logger_type):
     def decorator(fn):
         _LOGGERS[logger_type] = fn
         return fn
     return decorator
+
 
 class LoggerFactory:
     @staticmethod

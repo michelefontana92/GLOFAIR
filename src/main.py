@@ -2,6 +2,7 @@ import click
 from runs import RunFactory
 import os
 
+
 @click.command(context_settings=dict(
     ignore_unknown_options=True,
 ))
@@ -19,8 +20,8 @@ import os
 @click.option('--experiment', '-e', default='alpha_09', help='Experiment name')
 @click.option('--gpu_devices', '-g', multiple=True, help='List of GPU devices')
 def main(run, project_name, num_clients, metric_name, id,
-         use_wandb, onlyperf, threshold,gpu_devices,
-         metrics_list, groups_list, threshold_list,experiment):
+         use_wandb, onlyperf, threshold, gpu_devices,
+         metrics_list, groups_list, threshold_list, experiment):
     """
     Main entry point for the CLI application.
     This function sets up and executes a run based on the provided command-line options.
@@ -45,7 +46,7 @@ def main(run, project_name, num_clients, metric_name, id,
         os.environ["CUDA_VISIBLE_DEVICES"] = ",".join(gpu_devices)
     else:
         os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
-   
+
     run = RunFactory.create_run(run,
                                 gpu_devices=gpu_devices,
                                 project_name=project_name,

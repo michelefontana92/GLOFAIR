@@ -1,17 +1,22 @@
 import torch.nn as nn
 from .metrics_factory import register_metric
 
+
 def _cross_entropy_loss(**kwargs):
     return nn.CrossEntropyLoss()
+
 
 def _mse_loss(**kwargs):
     return nn.MSELoss()
 
+
 def _binary_crossentropy_loss(**kwargs):
     return nn.BCELoss()
 
+
 def _weighted_cross_entropy_loss(**kwargs):
     return nn.CrossEntropyLoss(weight=kwargs.get('weight'))
+
 
 @register_metric('loss')
 class Loss:

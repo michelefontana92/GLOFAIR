@@ -1,4 +1,6 @@
 _SURROGATES = {}
+
+
 def register_surrogate(surrogate_name):
     def decorator(fn):
         _SURROGATES[surrogate_name] = fn
@@ -8,7 +10,7 @@ def register_surrogate(surrogate_name):
 
 class SurrogateFactory:
     @staticmethod
-    def create(name,**kwargs):
+    def create(name, **kwargs):
         if name not in _SURROGATES:
             raise ValueError(f"Surrogate {name} not found")
         return _SURROGATES[name](**kwargs)
@@ -20,7 +22,8 @@ class SurrogateFactory:
         """
         surrogate_type = type(surrogate_instance).__name__
         surrogate_name = next(
-            (name for name, cls in _SURROGATES.items() if isinstance(surrogate_instance, cls)),
+            (name for name, cls in _SURROGATES.items()
+             if isinstance(surrogate_instance, cls)),
             None
         )
         if surrogate_name is None:
@@ -39,6 +42,7 @@ class SurrogateFactory:
         if surrogate_name not in _SURROGATES:
             raise ValueError(f"Surrogate {surrogate_name} non registrato.")
         surrogate_cls = _SURROGATES[surrogate_name]
-        instance = surrogate_cls.__new__(surrogate_cls)  # Crea l'istanza senza chiamare __init__
+        # Crea l'istanza senza chiamare __init__
+        instance = surrogate_cls.__new__(surrogate_cls)
         instance.__dict__.update(data['params'])  # Ripristina lo stato interno
         return instance
