@@ -3,6 +3,7 @@ from torch import nn
 from torch.nn import functional as F
 from .architecture_factory import register_architecture
 
+
 @register_architecture('mlp2hidden')
 class MLP2Hidden(nn.Module):
 
@@ -37,6 +38,7 @@ class MLP2Hidden(nn.Module):
     def unfreeze_all(self):
         self.fc1.requires_grad_(True)
         self.out.requires_grad_(True)
+
 
 @register_architecture('mlp3hidden')
 class MLP3Hidden(nn.Module):

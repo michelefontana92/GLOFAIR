@@ -1,8 +1,6 @@
 # GLOFAIR
 
-`GLOFAIR` is a methodology that leverages **Multi-Objective Optimization** to mitigate unfair behavior in federated learning by **maximizing predictive performance** while satisfying a **set of fairness constraints**. 
-
-Unlike many existing methods that typically address a **single fairness metric** or **one sensitive attribute at a time**, `GLOFAIR` is designed to accommodate **multiple fairness constraints simultaneously**, varying in terms of fairness metrics and sensitive attributes.
+`GLOFAIR` is a methodology for learning **fair** and **high-performing** neural networks in Federated Learning cross-silo settings. By combining predictive performance and fairness requirements into a single objective,`GLOFAIR`  integrates fairness into the training process, defining a specific scoring function and a corresponding loss function. This approach enables the learning of models that achieve a **balanced trade-off** between fairness and predictive performance, without requiring the computation of the Pareto Front. Unlike many existing methods that focus on a single fairness metric or sensitive attribute, `GLOFAIR` supports **multiple constraints** simultaneously. These constraints can involve different fairness metrics, such as Demographic Parity and Equalized Odds, and can be defined on both binary and non-binary sensitive attributes.
 
 ---
 

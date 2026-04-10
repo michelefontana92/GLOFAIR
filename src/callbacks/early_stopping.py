@@ -13,6 +13,7 @@ class EarlyStopping:
         __call__(**kwargs): Checks if training should be stopped based on the monitored metric.
         reset(): Resets the early stopping state.
     """
+
     def __init__(self, patience=5, delta=0.0,
                  monitor='val_loss', mode='min'):
         self.patience = patience
@@ -36,11 +37,9 @@ class EarlyStopping:
             self.best_score = score
             self.counter = 0
 
-        return self.early_stop,self.counter
+        return self.early_stop, self.counter
 
     def reset(self):
         self.counter = 0
         self.best_score = None
         self.early_stop = False
-    
-   

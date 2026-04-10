@@ -1,5 +1,6 @@
 import torch
-_ARCHITECTURES ={}
+_ARCHITECTURES = {}
+
 
 def register_architecture(architecture):
     """
@@ -21,12 +22,15 @@ def register_architecture(architecture):
     """
     def decorator(cls):
         if architecture in _ARCHITECTURES:
-            raise ValueError(f"Cannot register duplicate architecture ({architecture})")
+            raise ValueError(
+                f"Cannot register duplicate architecture ({architecture})")
         if not issubclass(cls, torch.nn.Module):
-            raise ValueError(f"architecture ({architecture}: {cls.__name__}) must extend torch.nn.Module")
+            raise ValueError(
+                f"architecture ({architecture}: {cls.__name__}) must extend torch.nn.Module")
         _ARCHITECTURES[architecture] = cls
         return cls
     return decorator
+
 
 class ArchitectureFactory:
     @staticmethod
