@@ -17,7 +17,7 @@ import os
 @click.option('-metrics_list', '-ml', multiple=True, help='List of metrics')
 @click.option('-groups_list', '-gl', multiple=True, help='List of groups')
 @click.option('-threshold_list', '-tl', type=float, multiple=True, help='List of threshold')
-@click.option('--experiment', '-e', default='alpha_09', help='Experiment name')
+@click.option('--experiment', '-e', default='dirichlet_alpha_09', help='Experiment name')
 @click.option('--gpu_devices', '-g', multiple=True, help='List of GPU devices')
 def main(run, project_name, num_clients, metric_name, id,
          use_wandb, onlyperf, threshold, gpu_devices,
